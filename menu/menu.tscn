@@ -72,6 +72,6 @@ margin/top = 700.0
 margin/right = 1596.0
 margin/bottom = 799.0
 value = "Exit"
-nextScene = "res://game/menu/exit.tscn"
+nextScene = "res://menu/exit.tscn"
 
 
