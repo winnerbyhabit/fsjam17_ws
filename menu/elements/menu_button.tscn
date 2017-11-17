@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=1]
+
+[ext_resource path="res://assets/button_vorlage.png" type="Texture" id=1]
+[ext_resource path="res://fonts/junicode64_bold.fnt" type="BitmapFont" id=2]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends TextureButton
+
+export(String) var value = \"Text\"
+export(String) var nextScene = \"res://\"
+
+func _ready():
+	#rufe onclick auf wenn button gedrückt wird
+	connect(\"pressed\", self, \"onclick\")
+	
+	#setze text
+	get_node(\"Text\").set_text(value)
+
+func onclick():
+	get_tree().change_scene(nextScene)
+"
+
+[node name="MenuButton" type="TextureButton"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 396.0
+margin/bottom = 99.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 1 )
+params/resize_mode = 0
+params/scale = Vector2( 4, 3 )
+params/stretch_mode = 0
+script/script = SubResource( 1 )
+value = "Text"
+nextScene = "res://"
+
+[node name="Text" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 19.0
+margin/top = 16.0
+margin/right = 376.0
+margin/bottom = 81.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+align = 1
+valign = 1
+uppercase = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+
