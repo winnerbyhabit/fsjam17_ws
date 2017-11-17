@@ -47,6 +47,7 @@ margin/top = 400.0
 margin/right = 796.0
 margin/bottom = 499.0
 value = "Start"
+nextScene = "res://level/gui.tscn"
 
 [node name="Options" parent="." instance=ExtResource( 2 )]
 
