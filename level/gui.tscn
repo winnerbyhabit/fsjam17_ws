@@ -32,6 +32,7 @@ script/script = SubResource( 1 )
 
 [node name="mana" type="Node2D" parent="."]
 
+editor/display_folded = true
 transform/pos = Vector2( 0, 1064 )
 
 [node name="ManaText" type="Label" parent="mana"]
@@ -83,7 +84,7 @@ nextScene = "res://menu/menu.tscn"
 
 [node name="monster_sidebar" parent="." instance=ExtResource( 4 )]
 
-visibility/visible = false
 transform/pos = Vector2( 1600, 60 )
+title = "Monster"
 
 
