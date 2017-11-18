@@ -43,11 +43,20 @@ max_lines_visible = -1
 [node name="Start" parent="." instance=ExtResource( 2 )]
 
 margin/left = 400.0
-margin/top = 400.0
+margin/top = 340.0
 margin/right = 796.0
-margin/bottom = 499.0
+margin/bottom = 439.0
 value = "Start"
 nextScene = "res://level/gui.tscn"
+
+[node name="Start_thorsten" parent="." instance=ExtResource( 2 )]
+
+margin/left = 400.0
+margin/top = 460.0
+margin/right = 796.0
+margin/bottom = 559.0
+value = "Start2"
+nextScene = "res://level/resizeGUI.tscn"
 
 [node name="Options" parent="." instance=ExtResource( 2 )]
 
