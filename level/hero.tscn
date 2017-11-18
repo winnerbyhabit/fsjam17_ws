@@ -61,6 +61,7 @@ script/source = "extends KinematicBody2D
 # Member variables
 export(int) var MOTION_SPEED = 256 # Pixels/seconds
 export(int) var lifepoints = 100
+var map 
 
 func _fixed_process(delta):
 	var motion = Vector2()
@@ -92,6 +93,10 @@ func getDamage(damage):
 
 func _ready():
 	set_fixed_process(true)
+	
+func _set_map(tm):
+	map = tm
+	
 "
 
 [sub_resource type="StyleBoxTexture" id=3]
