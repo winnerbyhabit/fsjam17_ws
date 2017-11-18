@@ -9,6 +9,7 @@ export(int) var damage = 1
 export(int) var mana = 20
 export(String) var monsterName = "Falle"
 export(String) var beschreibung = "I bims 1 Monster"
+export(String) var monsterClassPath = "res://"
 export(String) var tooltip = "I bims k1 Falle"
 
 

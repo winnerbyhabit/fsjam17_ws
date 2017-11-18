@@ -13,7 +13,8 @@ script/source = "extends Sprite
 #export(String) var title
 export(String,\"Traps\",\"Monster\") var title
 
-signal button_pressed(damage, mana)
+signal trap_button_pressed(damage, mana)
+signal monster_button_pressed(damage, mana, class_path)
 
 var trap_button_class = load(\"res://level/sidebar/trapButton.tscn\")
 var monster_button_class = load(\"res://level/sidebar/monsterButton.tscn\")
@@ -26,16 +27,22 @@ func _ready():
 		
 		var children = get_node(\"ButtonGroup\").get_children()
 		for child in children:
-			child.connect(\"pressed\", self, \"button_pressed\",[child.damage,child.mana])
+			child.connect(\"pressed\", self, \"trap_button_pressed\",[child.damage,child.mana])
 	elif(title == \"Monster\"):
 		addMonsterButtons()
 		
+		var children = get_node(\"ButtonGroup\").get_children()
+		for child in children:
+			child.connect(\"pressed\", self, \"monster_button_pressed\",[child.damage,child.mana,child.monsterClassPath])
 		
 
 
-func button_pressed(damage,mana):
-	print(\"button pressed\")
-	emit_signal(\"button_pressed\",damage,mana)
+func trap_button_pressed(damage,mana):
+	emit_signal(\"trap_button_pressed\",damage,mana)
+	
+func monster_button_pressed(damage,mana,class_path):
+	print(\"monster\")
+	emit_signal(\"monster_button_pressed\",damage,mana,class_path)
 
 func add_trap_button(damage,mana,name,imagePath):
 	var button = trap_button_class.instance()
@@ -51,6 +58,7 @@ func add_monster_button(damage,mana,name,classPath,imagePath):
 	button.mana = mana
 	button.monsterName=name
 	button.monsterImage=imagePath
+	button.monsterClassPath = classPath
 	#button.beschreibung = beschreibung
 	get_node(\"ButtonGroup\").add_child(button)
 

@@ -30,6 +30,7 @@ damage = 1
 mana = 20
 monsterName = "Falle"
 beschreibung = "I bims 1 Monster"
+monsterClassPath = "res://"
 tooltip = "I bims 1 Falle"
 
 [node name="Sprite" type="Sprite" parent="."]

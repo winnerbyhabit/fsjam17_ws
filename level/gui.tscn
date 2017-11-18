@@ -13,9 +13,18 @@ onready var level = get_node(\"Level\")
 var trap_class = load(\"res://level/Trap.tscn\")
 var mouse_offset = Vector2(-320,-60)
 
+#monster oder falle spawnen
+var trap_active = true
+
 #werte der aktuellen trap
 var trap_damage = 0
 var trap_mana = 100
+
+#werte des aktuellen monster
+var monster_damage = 0
+var monster_mana = 100
+var monster_class_path = \"\"
+
 
 func _ready():
 	set_process_input(true)
@@ -24,16 +33,35 @@ func _ready():
 func _input(ev):
 	if ev.type == InputEvent.MOUSE_BUTTON and ev.button_index == BUTTON_LEFT:
 		if( ev.pressed):
-			var trap = trap_class.instance()
-			trap.damage = trap_damage
-			#print(trap_damage)
-			trap.set_pos(ev.pos + mouse_offset)
-			level.placeTrap(trap)#,ev.global_pos)
+			if(trap_active):
+				var trap = trap_class.instance()
+				trap.damage = trap_damage
+				#print(trap_damage)
+				trap.set_pos(ev.pos + mouse_offset)
+				level.placeTrap(trap)#,ev.global_pos)
+			else:
+				var monster_class = load(monster_class_path)
+				print(monster_class_path)
+				#var monster_class = load(\"res://level/goblins/Goblin.tscn\")
+				print (\"1monster\")
+				var monster = monster_class.instance()
+				monster.damage = monster_damage
+				#print(trap_damage)
+				monster.set_pos(ev.pos + mouse_offset)
+				level.placeTrap(monster)#,ev.global_pos)
 		
 func set_trap(damage,mana):
-	print(\"damage:\",damage)
 	trap_damage = damage
-	trap_mana = mana"
+	trap_mana = mana
+	trap_active = true
+
+func set_monster(damage,mana,class_path):
+	print(\"set monster\")
+	monster_damage = damage
+	monster_mana = mana
+	monster_class_path = class_path
+	trap_active = false
+"
 
 [node name="gui" type="Node2D"]
 
@@ -99,5 +127,9 @@ title = "Traps"
 
 transform/pos = Vector2( 1600, 60 )
 title = "Monster"
+
+[connection signal="trap_button_pressed" from="trap_sidebar" to="." method="set_trap"]
+
+[connection signal="monster_button_pressed" from="monster_sidebar" to="." method="set_monster"]
 
 
