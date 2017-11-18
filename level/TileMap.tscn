@@ -17,6 +17,7 @@ var wall_y = int(width/1.2) #walls oriated parallel to y-axis
 var wall_x_max_len = int(width/3)
 var wall_y_max_len = int(height/3)
 
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
