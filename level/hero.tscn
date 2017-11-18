@@ -93,8 +93,10 @@ func getDamage(damage):
 
 func _ready():
 	set_fixed_process(true)
+	set_pos(map.get_start())
+	pass
 	
-func _set_map(tm):
+func set_map(tm):
 	map = tm
 	
 "
