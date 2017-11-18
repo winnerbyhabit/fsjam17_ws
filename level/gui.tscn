@@ -83,6 +83,7 @@ nextScene = "res://menu/menu.tscn"
 
 [node name="monster_sidebar" parent="." instance=ExtResource( 4 )]
 
+visibility/visible = false
 transform/pos = Vector2( 1600, 60 )
 
 
