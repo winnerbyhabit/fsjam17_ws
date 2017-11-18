@@ -18,6 +18,7 @@ export(int) var speed = 100
 export(float) var smoothness = 0.1
 export var direction = 1
 onready var sprite = get_node(\"Goblin\")
+var placing = true
 
 func _ready():
 #nur innerhalb der map
@@ -25,13 +26,14 @@ func _ready():
 		queue_free()
 	
 	set_fixed_process(true)
+	placing = false
 
 
 func _on_Area2D_body_enter( body ):
 	if(body.is_in_group(\"hero\")):		
 		body.getDamage(damage)
 		queue_free()
-	if(body.is_in_group(\"wall\")):
+	if(placing && body.is_in_group(\"wall\")):
 		queue_free()
 
 func _fixed_process(delta):	
