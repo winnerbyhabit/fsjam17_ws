@@ -19,7 +19,8 @@ func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
 	
-	
+	# random Start and Exit points at least distance tiles away from each other
+	randomize() #new randomseed
 	
 	var map = {}
 
@@ -63,8 +64,6 @@ func _ready():
 	
 	
 	
-	# random Start and Exit points at least distance tiles away from each other
-	randomize() #new randomseed
 	# start
 	var start_x = randi()%width
 	var start_y = randi()%height
