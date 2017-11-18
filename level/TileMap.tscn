@@ -74,11 +74,11 @@ func _ready():
 	
 	
 	# start
-	var start_x = randi()%width
-	var start_y = randi()%height
+	var start_x = (randi()%(width-2))+1
+	var start_y = (randi()%(height-2))+1
 	
 	# first pick exit_y cause width>height and you can pic bigger distance
-	var exit_y = randi()%height
+	var exit_y = (randi()%(height-2))+1
 
 	var dif_y = start_y-exit_y 
 	if (dif_y<0):
@@ -88,18 +88,18 @@ func _ready():
 		exit_x = randi()%width
 	else:
 		var min_dif_x = distance - dif_y # dif_x + dif_y = distance
-		var temp_range # alias all cells that can be choosen
+		var temp_range = width-2 # alias all cells that can be choosen
 		var flag = 0 # changes flag if start is close to wall
 		if(start_x<=min_dif_x):
-			temp_range = width - start_x - min_dif_x
+			temp_range += -start_x - min_dif_x
 			flag = 1 # start is near 0
 		elif((start_x+min_dif_x)>=width):
-			temp_range = width - start_x - min_dif_x
+			temp_range += -start_x - min_dif_x
 			flag = 2 # start is near width
 		else:
-			temp_range = width - (2*min_dif_x)
+			temp_range += -(2*min_dif_x)
 			
-		exit_x = randi()%temp_range
+		exit_x = (randi()%temp_range)+1
 		if(flag==1):
 			exit_x += start_x + min_dif_x
 		elif(exit_x >= (start_x-min_dif_x)):
