@@ -1,0 +1,86 @@
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="res://assets/sidebar_bg.png" type="Texture" id=1]
+[ext_resource path="res://fonts/junicode64_bold.fnt" type="BitmapFont" id=2]
+[ext_resource path="res://assets/button_trap_bg.png" type="Texture" id=3]
+[ext_resource path="res://assets/trap.png" type="Texture" id=4]
+
+[node name="sidebar" type="Sprite"]
+
+transform/pos = Vector2( 0, 60 )
+texture = ExtResource( 1 )
+centered = false
+
+[node name="Label" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 8.0
+margin/right = 320.0
+margin/bottom = 73.0
+custom_fonts/font = ExtResource( 2 )
+text = "Traps"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="ButtonGroup" type="ButtonGroup" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 5.0
+margin/top = 65.0
+margin/right = 315.0
+margin/bottom = 920.0
+alignment = 0
+
+[node name="TextureButton" type="TextureButton" parent="ButtonGroup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 310.0
+margin/bottom = 100.0
+toggle_mode = true
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 3 )
+params/resize_mode = 0
+params/stretch_mode = 0
+
+[node name="Sprite" type="Sprite" parent="ButtonGroup/TextureButton"]
+
+transform/pos = Vector2( 10, 20 )
+transform/scale = Vector2( 2, 2 )
+texture = ExtResource( 4 )
+centered = false
+
+[node name="Label" type="Label" parent="ButtonGroup/TextureButton"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 75.0
+margin/top = 10.0
+margin/right = 305.0
+margin/bottom = 74.0
+text = "Falle1:
+Mana: 20		Damage 10"
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+
