@@ -13,16 +13,27 @@ onready var level = get_node(\"Level\")
 var trap_class = load(\"res://level/Trap.tscn\")
 var mouse_offset = Vector2(-320,-60)
 
+#werte der aktuellen trap
+var trap_damage = 0
+var trap_mana = 100
+
 func _ready():
 	set_process_input(true)
+	get_node(\"trap_sidebar\").connect(\"button_pressed\",self,\"set_trap\")
 
 func _input(ev):
 	if ev.type == InputEvent.MOUSE_BUTTON and ev.button_index == BUTTON_LEFT:
-		#pressed = ev.pressed
-		var trap = trap_class.instance()
-		trap.damage =5
-		trap.set_pos(ev.pos + mouse_offset)
-		level.placeTrap(trap)#,ev.global_pos)"
+		if( ev.pressed):
+			var trap = trap_class.instance()
+			trap.damage = trap_damage
+			#print(trap_damage)
+			trap.set_pos(ev.pos + mouse_offset)
+			level.placeTrap(trap)#,ev.global_pos)
+		
+func set_trap(damage,mana):
+	print(\"damage:\",damage)
+	trap_damage = damage
+	trap_mana = mana"
 
 [node name="gui" type="Node2D"]
 
@@ -32,6 +43,7 @@ script/script = SubResource( 1 )
 
 [node name="mana" type="Node2D" parent="."]
 
+editor/display_folded = true
 transform/pos = Vector2( 0, 1064 )
 
 [node name="ManaText" type="Label" parent="mana"]
@@ -83,7 +95,7 @@ nextScene = "res://menu/menu.tscn"
 
 [node name="monster_sidebar" parent="." instance=ExtResource( 4 )]
 
-visibility/visible = false
 transform/pos = Vector2( 1600, 60 )
+title = "Monster"
 
 

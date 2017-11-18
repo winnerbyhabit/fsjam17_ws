@@ -1,0 +1,132 @@
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="res://assets/Graphic/Monster/Monster32.png" type="Texture" id=1]
+
+[sub_resource type="RectangleShape2D" id=5]
+
+custom_solver_bias = 0.0
+extents = Vector2( 10, 8.24731 )
+
+[sub_resource type="GDScript" id=2]
+
+script/source = "extends KinematicBody2D
+
+export(int) var damage = 50
+export var velocity = Vector2()
+export(int) var speed = 10
+export(float) var smoothness = 0.1
+export(int) var directionX = 0
+export(int) var directionY = 1
+onready var sprite = get_node(\"Goblin3\")
+var step = 32
+
+func _ready():
+	set_fixed_process(true)
+
+
+func _on_Area2D_body_enter( body ):
+	if(body.is_in_group(\"hero\")):		
+		body.getDamage(damage)
+		queue_free()
+
+
+func _fixed_process(delta):	
+	if(is_colliding()):
+		print(\"start collision:\")
+		print(\"dirX %s\" % directionX)
+		print(\"dirY %s\" % directionY)
+		print(\"%s\" % get_pos())
+		var travel = get_travel()
+		var x = travel.x
+		var y = travel.y
+		var place = Vector2()
+		if(x != 0):
+			place.y = get_pos().y
+			place.x = get_pos().x
+			step = (int (place.x / 32))
+			if(x > 0):
+				place.x = 32 * step
+				set_pos(place)
+				directionY = -1
+			else:
+				place.x = 32 * (step+1)
+				set_pos(place)
+				directionY = 1
+			directionX = 0
+		else:
+			place.x = get_pos().x
+			place.y = get_pos().y
+			step = (int (place.y / 32))
+			if(y > 0):
+				place.y = 32 * step
+				set_pos(place)
+				directionX = 1
+			else:
+				place.y = 32 * (step+1)
+				set_pos(place)
+				directionX = -1
+			directionY = 0
+	#velocity.x = lerp(velocity.x, speed * directionX, smoothness)
+	#velocity.y = lerp(velocity.y, speed * directionY, smoothness)
+	velocity.x = speed * directionX;
+	velocity.y = speed * directionY;
+	var motion = velocity * delta
+	move(motion)"
+
+[sub_resource type="RectangleShape2D" id=4]
+
+custom_solver_bias = 0.0
+extents = Vector2( 10, 10 )
+
+[node name="Goblin3" type="KinematicBody2D"]
+
+input/pickable = false
+shapes/0/shape = SubResource( 5 )
+shapes/0/transform = Matrix32( 1.17638, 0, 0, 1.44539, 16.4837, 14.5956 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+collision/margin = 0.08
+script/script = SubResource( 2 )
+damage = 50
+velocity = Vector2( 0, 0 )
+speed = 50
+smoothness = 0.1
+directionX = 0
+directionY = 1
+
+[node name="Sprite" type="Sprite" parent="."]
+
+texture = ExtResource( 1 )
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+transform/pos = Vector2( 16.4837, 14.5956 )
+transform/scale = Vector2( 1.17638, 1.44539 )
+shape = SubResource( 5 )
+trigger = false
+_update_shape_index = 0
+
+[node name="Area2D" type="Area2D" parent="."]
+
+transform/pos = Vector2( 0.642563, 3.59834 )
+transform/scale = Vector2( 3.59778, 2.33639 )
+input/pickable = true
+shapes/0/shape = SubResource( 4 )
+shapes/0/transform = Matrix32( 0.294919, 0, 0, 0.480347, 4.53642, 4.73039 )
+shapes/0/trigger = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+
+[node name="CollisionShape2D1" type="CollisionShape2D" parent="Area2D"]
+
+transform/pos = Vector2( 4.53642, 4.73039 )
+transform/scale = Vector2( 0.294919, 0.480347 )
+shape = SubResource( 4 )
+trigger = true
+_update_shape_index = 0
+
+

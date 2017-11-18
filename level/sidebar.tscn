@@ -1,16 +1,40 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=5 format=1]
 
 [ext_resource path="res://assets/sidebar_bg.png" type="Texture" id=1]
 [ext_resource path="res://fonts/junicode64_bold.fnt" type="BitmapFont" id=2]
 [ext_resource path="res://level/sidebar/trapButton.tscn" type="PackedScene" id=3]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Sprite
+
+# class member variables go here, for example:
+# var a = 2
+# var b = \"textvar\"
+export(String) var title
+
+signal button_pressed(damage, mana)
+
+func _ready():
+	get_node(\"title\").set_text(title)
+	var children = get_node(\"ButtonGroup\").get_children()
+	for child in children:
+		child.connect(\"pressed\", self, \"button_pressed\",[child.damage,child.mana])
+
+func button_pressed(damage,mana):
+	print(\"button pressed\")
+	emit_signal(\"button_pressed\",damage,mana)
+"
 
 [node name="sidebar" type="Sprite"]
 
 transform/pos = Vector2( 0, 60 )
 texture = ExtResource( 1 )
 centered = false
+script/script = SubResource( 1 )
+title = "Traps"
 
-[node name="Label" type="Label" parent="."]
+[node name="title" type="Label" parent="."]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
@@ -42,28 +66,35 @@ alignment = 0
 
 [node name="button" parent="ButtonGroup" instance=ExtResource( 3 )]
 
-trapName = "Falle"
-tooltip = "I bims 1 Falle"
+trapImage = "res://assets/trap.png"
+damage = 10
+trapName = "Loch"
 
 [node name="button1" parent="ButtonGroup" instance=ExtResource( 3 )]
 
 margin/top = 100.0
 margin/bottom = 200.0
-trapName = "Falle"
-tooltip = "I bims 1 Falle"
+trapImage = "res://assets/trap.png"
+damage = 20
+mana = 50
+trapName = "tiefes Loch"
 
 [node name="button2" parent="ButtonGroup" instance=ExtResource( 3 )]
 
 margin/top = 200.0
 margin/bottom = 300.0
-trapName = "Falle"
-tooltip = "I bims 1 Falle"
+trapImage = "res://assets/trap.png"
+damage = 30
+mana = 100
+trapName = "ziemlich tiefes Loch"
 
 [node name="button3" parent="ButtonGroup" instance=ExtResource( 3 )]
 
 margin/top = 300.0
 margin/bottom = 400.0
-trapName = "Falle"
-tooltip = "I bims 1 Falle"
+trapImage = "res://assets/trap.png"
+damage = 40
+mana = 150
+trapName = "Höllenloch"
 
 

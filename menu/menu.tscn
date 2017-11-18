@@ -14,7 +14,6 @@ export(String) var title = \"title\"
 # var b = \"textvar\"
 
 func _ready():
-	
 	get_node(\"Title\").set_text(title)"
 
 [node name="Menu" type="Node"]
