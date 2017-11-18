@@ -23,11 +23,20 @@ func _ready():
 	
 	var map = {}
 
-	# init map with all tiles 0
+	# init map with all tiles 0 and borders 1
 	for i in range(width):
 		map[i] = {}
-		for j in range(height):
-			map[i][j] = 0
+		map[i][0] = 1
+		map[i][height-1] = 1
+	
+	for j in range(height):
+		map[0][j] = 1
+		map[width-1][j] = 1
+	
+	for i in range(width-2):
+		for j in range(height-2):
+			map[i+1][j+1] = 0
+	
 	
 	
 	
