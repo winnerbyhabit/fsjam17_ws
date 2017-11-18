@@ -58,6 +58,7 @@ extents = Vector2( 10, 10 )
 
 script/source = "extends KinematicBody2D
 
+
 # Member variables
 export(int) var MOTION_SPEED = 256 # Pixels/seconds
 export(int) var lifepoints = 100

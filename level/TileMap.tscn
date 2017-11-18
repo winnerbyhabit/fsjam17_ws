@@ -7,6 +7,7 @@
 
 script/source = "extends TileMap
 
+#scene-variables
 export(int) var distance = 15
 export(int) var width = 40
 export(int) var height = 30

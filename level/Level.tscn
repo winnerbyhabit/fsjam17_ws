@@ -10,12 +10,10 @@ script/source = "extends Sprite
 var pressed = false
 
 func _ready():
-	
 	pass
 
 func placeTrap(trap):
 	add_child(trap)
-	#print(pos)
 	
 func set_start():
 	var hero = get_node(\"hero\")
