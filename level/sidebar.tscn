@@ -13,8 +13,17 @@ script/source = "extends Sprite
 # var b = \"textvar\"
 export(String) var title
 
+signal button_pressed(damage, mana)
+
 func _ready():
 	get_node(\"title\").set_text(title)
+	var children = get_node(\"ButtonGroup\").get_children()
+	for child in children:
+		child.connect(\"pressed\", self, \"button_pressed\",[child.damage,child.mana])
+
+func button_pressed(damage,mana):
+	print(\"button pressed\")
+	emit_signal(\"button_pressed\",damage,mana)
 "
 
 [node name="sidebar" type="Sprite"]
