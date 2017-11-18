@@ -83,7 +83,9 @@ expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
 
-[node name="hero" type="KinematicBody2D"]
+[node name="hero" type="KinematicBody2D" groups=[
+"hero",
+]]
 
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
