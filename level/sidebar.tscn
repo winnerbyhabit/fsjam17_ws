@@ -72,8 +72,7 @@ func addTrapButtons():
 	add_trap_button(50,100,\"noch ein Loch\",\"res://assets/trap.png\")
 	add_trap_button(60,150,\"Loch ist Loch\",\"res://assets/trap.png\")
 	add_trap_button(70,200,\"Fallgrube\",\"res://assets/trap.png\")
-	add_trap_button(80,270,\"noch 1 loch\",\"res://assets/trap.png\")
-	add_trap_button(90,350,\"DAS LOCH\",\"res://assets/trap.png\")"
+	add_trap_button(80,270,\"DAS LOCH\",\"res://assets/trap.png\")"
 
 [node name="sidebar" type="Sprite"]
 
