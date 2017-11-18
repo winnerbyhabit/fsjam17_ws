@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="res://assets/button_trap_bg.png" type="Texture" id=1]
+[ext_resource path="res://assets/button_trap_bg_active.png" type="Texture" id=2]
+[ext_resource path="res://level/sidebar/trapButton.gd" type="Script" id=3]
+[ext_resource path="res://assets/trap.png" type="Texture" id=4]
+
+[node name="TextureButton" type="TextureButton"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 310.0
+margin/bottom = 100.0
+toggle_mode = true
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 1 )
+textures/hover = ExtResource( 2 )
+textures/focused = ExtResource( 2 )
+params/resize_mode = 0
+params/stretch_mode = 0
+script/script = ExtResource( 3 )
+trapImage = "res://"
+damage = 1
+mana = 20
+trapName = "Falle"
+tooltip = "I bims 1 Falle"
+
+[node name="Sprite" type="Sprite" parent="."]
+
+transform/pos = Vector2( 10, 20 )
+transform/scale = Vector2( 2, 2 )
+texture = ExtResource( 4 )
+centered = false
+
+[node name="Label" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 75.0
+margin/top = 10.0
+margin/right = 305.0
+margin/bottom = 74.0
+text = "Falle1:
+Mana: 20		Damage 10"
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+

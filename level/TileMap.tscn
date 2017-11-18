@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=1]
+[gd_scene load_steps=5 format=1]
 
 [ext_resource path="res://level/TileSet.tres" type="TileSet" id=1]
+[ext_resource path="res://assets/Exit1.png" type="Texture" id=2]
 
 [sub_resource type="GDScript" id=1]
 
@@ -19,10 +20,11 @@ func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
 	
-	
+	# random Start and Exit points at least distance tiles away from each other
+	randomize() #new randomseed
 	
 	var map = {}
-
+	var tilesize = 32
 	# init map with all tiles 0
 	for i in range(width):
 		map[i] = {}
@@ -63,8 +65,6 @@ func _ready():
 	
 	
 	
-	# random Start and Exit points at least distance tiles away from each other
-	randomize() #new randomseed
 	# start
 	var start_x = randi()%width
 	var start_y = randi()%height
@@ -97,6 +97,7 @@ func _ready():
 		elif(exit_x >= (start_x-min_dif_x)):
 				exit_x += (2*min_dif_x)
 	
+	get_node(\"tuer\").set_pos(Vector2(exit_x*tilesize,exit_y*tilesize))
 	map[start_x][start_y] = 2
 	map[exit_x][exit_y] = 3
 	
@@ -134,6 +135,12 @@ func _ready():
 	pass
 "
 
+[sub_resource type="CapsuleShape2D" id=2]
+
+custom_solver_bias = 0.0
+radius = 10.0
+height = 20.0
+
 [node name="TileMap" type="TileMap"]
 
 mode = 0
@@ -152,5 +159,29 @@ collision/mask = 1
 occluder/light_mask = 1
 tile_data = IntArray(  )
 script/script = SubResource( 1 )
+
+[node name="tuer" type="Sprite" parent="."]
+
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Area2D" type="Area2D" parent="tuer"]
+
+input/pickable = true
+shapes/0/shape = SubResource( 2 )
+shapes/0/transform = Matrix32( 1.39037, 0, 0, 0.832393, 13.739, 15.5618 )
+shapes/0/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="tuer/Area2D"]
+
+transform/pos = Vector2( 13.739, 15.5618 )
+transform/scale = Vector2( 1.39037, 0.832393 )
+shape = SubResource( 2 )
+trigger = false
+_update_shape_index = 0
 
 
