@@ -28,7 +28,7 @@ var monster_class_path = \"\"
 
 func _ready():
 	set_process_input(true)
-	get_node(\"trap_sidebar\").connect(\"button_pressed\",self,\"set_trap\")
+	#get_node(\"trap_sidebar\").connect(\"trap_button_pressed\",self,\"set_trap\")
 
 func _input(ev):
 	if ev.type == InputEvent.MOUSE_BUTTON and ev.button_index == BUTTON_LEFT:
