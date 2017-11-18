@@ -10,6 +10,7 @@ script/source = "extends TileMap
 var distance = 15
 var width = 40
 var height = 30
+var tilesize = 32
 var pathes = 5 #pathes without obstacles
 var wall_x = int(height/1.2) #walls oriated parallel to x-axis
 var wall_y = int(width/1.2) #walls oriated parallel to y-axis
@@ -25,12 +26,19 @@ func _ready():
 	randomize() #new randomseed
 	
 	var map = {}
-	var tilesize = 32
 	# init map with all tiles 0
 	for i in range(width):
 		map[i] = {}
-		for j in range(height):
-			map[i][j] = 0
+		map[i][0] = 1
+		map[i][height-1] = 1
+
+	for j in range(height):
+		map[0][j] = 1
+		map[width-1][j] = 1
+	
+	for i in range(width-2):
+		for j in range(height-2):
+			map[i+1][j+1] = 0
 	
 	
 	
@@ -67,11 +75,11 @@ func _ready():
 	
 	
 	# start
-	var start_x = randi()%width
-	var start_y = randi()%height
+	var start_x = (randi()%(width-2))+1
+	var start_y = (randi()%(height-2))+1
 	
 	# first pick exit_y cause width>height and you can pic bigger distance
-	var exit_y = randi()%height
+	var exit_y = (randi()%(height-2))+1
 
 	var dif_y = start_y-exit_y 
 	if (dif_y<0):
@@ -81,26 +89,26 @@ func _ready():
 		exit_x = randi()%width
 	else:
 		var min_dif_x = distance - dif_y # dif_x + dif_y = distance
-		var temp_range # alias all cells that can be choosen
+		var temp_range = width-2 # alias all cells that can be choosen
 		var flag = 0 # changes flag if start is close to wall
 		if(start_x<=min_dif_x):
-			temp_range = width - start_x - min_dif_x
+			temp_range += -start_x - min_dif_x
 			flag = 1 # start is near 0
 		elif((start_x+min_dif_x)>=width):
-			temp_range = width - start_x - min_dif_x
+			temp_range += -start_x - min_dif_x
 			flag = 2 # start is near width
 		else:
-			temp_range = width - (2*min_dif_x)
+			temp_range += -(2*min_dif_x)
 			
-		exit_x = randi()%temp_range
+		exit_x = (randi()%temp_range)+1
 		if(flag==1):
 			exit_x += start_x + min_dif_x
 		elif(exit_x >= (start_x-min_dif_x)):
 				exit_x += (2*min_dif_x)
 	
 	get_node(\"tuer\").set_pos(Vector2(exit_x*tilesize,exit_y*tilesize))
-	map[start_x][start_y] = 2
-	map[exit_x][exit_y] = 3
+	map[start_x][start_y] = 0
+	map[exit_x][exit_y] = 0
 	
 	
 	
@@ -142,7 +150,9 @@ custom_solver_bias = 0.0
 radius = 10.0
 height = 20.0
 
-[node name="TileMap" type="TileMap"]
+[node name="TileMap" type="TileMap" groups=[
+"wall",
+]]
 
 mode = 0
 tile_set = ExtResource( 1 )
