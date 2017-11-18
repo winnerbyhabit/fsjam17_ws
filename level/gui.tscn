@@ -93,6 +93,8 @@ nextScene = "res://menu/menu.tscn"
 
 [node name="trap_sidebar" parent="." instance=ExtResource( 4 )]
 
+title = "Traps"
+
 [node name="monster_sidebar" parent="." instance=ExtResource( 4 )]
 
 transform/pos = Vector2( 1600, 60 )
