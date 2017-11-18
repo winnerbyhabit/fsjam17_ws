@@ -1,10 +1,31 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=5 format=1]
 
 [ext_resource path="res://level/Level.tscn" type="PackedScene" id=1]
 [ext_resource path="res://menu/elements/menu_button.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/exit.png" type="Texture" id=3]
 
-[node name="gui" type="Node"]
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Node
+
+onready var level = get_node(\"Level\")
+var trap_class = load(\"res://level/Trap.tscn\")
+var mouse_offset = Vector2(-320,-60)
+
+func _ready():
+	set_process_input(true)
+
+func _input(ev):
+	if ev.type == InputEvent.MOUSE_BUTTON and ev.button_index == BUTTON_LEFT:
+		#pressed = ev.pressed
+		var trap = trap_class.instance()
+		trap.damage =5
+		trap.set_pos(ev.pos + mouse_offset)
+		level.placeTrap(trap)#,ev.global_pos)"
+
+[node name="gui" type="Node2D"]
+
+script/script = SubResource( 1 )
 
 [node name="Level" parent="." instance=ExtResource( 1 )]
 
