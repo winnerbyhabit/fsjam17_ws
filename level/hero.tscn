@@ -102,11 +102,11 @@ func _fixed_process(delta):
 			update() # we update the node so it has to dra
 		counter = 0
 
-func _draw():
-	# if there are points to draw
-	if points.size() > 1:
-		for p in points:
-			draw_circle(p - get_pos(), 8, Color(1, 0, 0)) # we draw a circle (convert to global position first)
+#func _draw():
+#	# if there are points to draw
+#	if points.size() > 1:
+#		for p in points:
+#			draw_circle(p - get_pos(), 8, Color(1, 0, 0)) # we draw a circle (convert to global position first)
 
 func getDamage(damage):
 	lifepoints -= damage
