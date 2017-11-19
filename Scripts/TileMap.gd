@@ -31,7 +31,7 @@ func generateMap():
 	for i in range(width):
 		map[Vector2(i, 0)] = 1
 		map[Vector2(i,height-1)] = 1
-
+	
 	for j in range(height):
 		map[Vector2(0,j)] = 1
 		map[Vector2(width-1,j)] = 1
@@ -50,7 +50,7 @@ func generateMap():
 		var offset = randi()%(width-len) #space between side and wall
 		for j in range(len):
 			map[Vector2(j+offset,temp)] = 1
-
+	
 	# place $(wall_y) walls parallel to y-axis
 	walls = []
 	for i in range(wall_y):
@@ -76,7 +76,7 @@ func generateMap():
 	
 	# first pick exit_y cause width>height and you can pic bigger distance
 	var exit_y = (randi()%(height-2))+1
-
+	
 	var dif_y = start_y-exit_y 
 	if (dif_y<0):
 		dif_y = -dif_y 
@@ -101,6 +101,7 @@ func generateMap():
 			exit_x += start_x + min_dif_x
 		elif(exit_x >= (start_x-min_dif_x)):
 				exit_x += (2*min_dif_x)
+	exit = Vector2(exit_x,exit_y)
 	
 	get_node("tuer").set_pos(Vector2(exit_x*tilesize,exit_y*tilesize))
 	#map[Vector2(start_x,start_y)] = 2
@@ -108,35 +109,29 @@ func generateMap():
 	
 	
 	
-	
+	var e0 = Vector2(1,0)
+	var e1 = Vector2(0,1)
 	#generate $(pathes) ways between start and exit with no wall
 	for i in range(pathes):
-		print("path" , i )
-		var point = {
-			"x" : start_x,
-			"y" : start_y,
-			}
-		while( (point["x"]!=exit_x) or (point["y"]!=exit_y)):
+		print(start)
+		var point = start
+		while(point!=exit):
 				var temp = randi()%2
 				
-				if(((temp==0)and(point["x"]!=exit_x))or((temp==1)and(point["y"]==exit_y))):
-					if(point["x"]<exit_x):
-						point["x"]+=1
+				if(((temp==0)and(point.x!=exit.x))or((temp==1)and(point.y==exit.y))):
+					if(point.x<exit.x):
+						point += e0
 					else: 
-						point["x"]-=1
+						point -= e0
 				else:
-					if(point["y"]<exit_y):
-						point["y"]+=1
+					if(point.y<exit.y):
+						point += e1
 					else:
-						point["y"]-=1
-						
-				if((point["x"]!=exit_x)or(point["y"]!=exit_y)):
-					map[Vector2(point["x"],point["y"])] = 0
-		var key = Vector2(point["x"],point["y"])
-		if map.has(key):
-			map.erase(key)
-	exit = Vector2(exit_x,exit_y)
-
+						point -= e1
+					
+				if(map.has(point)):
+					map.erase(point)
+	
 	
 	for i in range(width):
 		for j in range(height):
@@ -146,6 +141,7 @@ func generateMap():
 			else:
 				set_cell(i,j,0)
 	#connect("ready",get_parent(),"set_start")
+	print(start)
 	emit_signal("ready")
 
 
