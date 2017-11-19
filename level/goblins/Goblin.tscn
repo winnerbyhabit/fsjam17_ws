@@ -48,7 +48,9 @@ func _fixed_process(delta):
 	move(motion)
 	
 func start():
+	print(\"function start\")
 	placing = false
+	print(\"start placing: %s\" % placing)
 	set_fixed_process(true)"
 
 [sub_resource type="Animation" id=3]
@@ -91,8 +93,8 @@ tracks/2/keys = {
 }
 
 [node name="Goblin" type="KinematicBody2D" groups=[
-"goblin",
 "obstacle",
+"goblin",
 ]]
 
 input/pickable = false

@@ -69,7 +69,8 @@ func addMonsterButtons():
 	add_monster_button(40,200,\"starker weißer Drache\",\"res://level/goblins/Goblin2.tscn\",\"res://assets/Graphic/Monster/Monster31.png\")
 	add_monster_button(50,300,\"roter Drache\",\"res://level/goblins/Goblin3.tscn\",\"res://assets/Graphic/Monster/Monster32.png\")
 	add_monster_button(60,400,\"starker roter Drache\",\"res://level/goblins/Goblin3.tscn\",\"res://assets/Graphic/Monster/Monster32.png\")
-	
+	add_monster_button(70,500,\"Magier\",\"res://level/goblins/Goblin4.tscn\",\"res://assets/Graphic/Monster/Monster29.png\")
+	add_monster_button(80,600,\"starker Magier\",\"res://level/goblins/Goblin4.tscn\",\"res://assets/Graphic/Monster/Monster29.png\")
 	
 
 func addTrapButtons():

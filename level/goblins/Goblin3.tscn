@@ -15,7 +15,6 @@ script/source = "extends KinematicBody2D
 export(int) var damage = 50
 export var velocity = Vector2()
 export(int) var speed = 10
-export(float) var smoothness = 0.1
 export(int) var directionX = 0
 export(int) var directionY = 1
 onready var sprite = get_node(\"Sprite\")
@@ -27,6 +26,8 @@ func _ready():
 	#nur innerhalb der map
 	if(get_pos().x < 10 or get_pos().y < 10 or get_pos().x > 1270 or get_pos().y > 970):
 		queue_free()
+	var pos = realPositionCentered(get_pos())
+	set_pos(pos)
 
 
 func _on_Area2D_body_enter( body ):
@@ -39,10 +40,6 @@ func _on_Area2D_body_enter( body ):
 
 func _fixed_process(delta):	
 	if(is_colliding()):
-		print(\"start collision:\")
-		print(\"dirX %s\" % directionX)
-		print(\"dirY %s\" % directionY)
-		print(\"%s\" % get_pos())
 		var travel = get_travel()
 		var x = travel.x
 		var y = travel.y
@@ -73,13 +70,16 @@ func _fixed_process(delta):
 				set_pos(place)
 				directionX = -1
 			directionY = 0
-	#velocity.x = lerp(velocity.x, speed * directionX, smoothness)
-	#velocity.y = lerp(velocity.y, speed * directionY, smoothness)
 	velocity.x = speed * directionX;
 	velocity.y = speed * directionY;
 	var motion = velocity * delta
 	move(motion)
-	
+
+func realPositionCentered(var1):
+	var1.x = (int (var1.x / 32 )) * 32 + 16
+	var1.y = (int (var1.y / 32 )) * 32 + 16
+	return var1
+
 func start():
 	placing = false
 	set_fixed_process(true)"
@@ -129,8 +129,8 @@ tracks/2/keys = {
 }
 
 [node name="Goblin3" type="KinematicBody2D" groups=[
-"goblin",
 "obstacle",
+"goblin",
 ]]
 
 input/pickable = false
@@ -144,7 +144,6 @@ script/script = SubResource( 2 )
 damage = 50
 velocity = Vector2( 0, 0 )
 speed = 50
-smoothness = 0.1
 directionX = 0
 directionY = 1
 
