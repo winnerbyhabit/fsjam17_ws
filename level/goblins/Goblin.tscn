@@ -27,7 +27,8 @@ func _ready():
 #nur innerhalb der map
 	if(get_pos().x < 10 or get_pos().y < 10 or get_pos().x > 1270 or get_pos().y > 970):
 		queue_free()
-	
+	var pos = realPositionCentered(get_pos())
+	set_pos(pos)
 	
 
 
@@ -46,7 +47,12 @@ func _fixed_process(delta):
 	velocity.x = lerp(velocity.x, speed * direction, smoothness)
 	var motion = velocity * delta
 	move(motion)
-	
+
+func realPositionCentered(var1):
+	var1.x = (int (var1.x / 32 )) * 32 + 16
+	var1.y = (int (var1.y / 32 )) * 32 + 16
+	return var1
+
 func start():
 	print(\"function start\")
 	placing = false
@@ -93,8 +99,8 @@ tracks/2/keys = {
 }
 
 [node name="Goblin" type="KinematicBody2D" groups=[
-"obstacle",
 "goblin",
+"obstacle",
 ]]
 
 input/pickable = false
