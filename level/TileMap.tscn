@@ -20,11 +20,14 @@ export(int) var wall_y_max_len = 10
 export(int) var start
 
 signal ready
+signal hero_wins
 
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	generateMap()
 	
+func generateMap():
 	# random Start and Exit points at least distance tiles away from each other
 	randomize() #new randomseed
 	
@@ -152,7 +155,13 @@ func _ready():
 
 
 func get_start():
-	return start"
+	return start
+
+func hit_exit( body ):
+	if(body.is_in_group(\"hero\")):
+		emit_signal(\"hero_wins\")
+	pass # replace with function body
+"
 
 [sub_resource type="CapsuleShape2D" id=2]
 
@@ -214,5 +223,7 @@ transform/scale = Vector2( 1.39037, 0.832393 )
 shape = SubResource( 2 )
 trigger = false
 _update_shape_index = 0
+
+[connection signal="body_enter" from="tuer/Area2D" to="." method="hit_exit"]
 
 
