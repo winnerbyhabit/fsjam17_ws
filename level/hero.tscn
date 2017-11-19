@@ -62,7 +62,7 @@ script/source = "extends KinematicBody2D
 
 # Member variables
 #normale motion speed
-var MOTION_SPEED = 256
+var MOTION_SPEED = 64
 #current motion speed
 export(int) var motion_speed = 0 # Pixels/seconds
 export(int) var lifepoints = 100
@@ -187,21 +187,22 @@ var tempElapsed = 0
 # var b = \"textvar\"
 
 func _ready():
-	set_process(true)
+	set_fixed_process(true)
 	
 	
-func _process(delta):
+func _fixed_process(delta):
 	tempElapsed = tempElapsed + delta
-	set_animation(\"idle\")
+	#
 	if (Input.is_action_pressed(\"move_up\")):
 		set_animation(\"up\")
-	if (Input.is_action_pressed(\"move_down\")):
+	elif (Input.is_action_pressed(\"move_down\")):
 		set_animation(\"down\")
-	if (Input.is_action_pressed(\"move_left\")):
+	elif (Input.is_action_pressed(\"move_left\")):
 		set_animation(\"left\")
-	if (Input.is_action_pressed(\"move_right\")):
+	elif (Input.is_action_pressed(\"move_right\")):
 		set_animation(\"right\")
-		
+	else:
+		set_animation(\"idle\")
 	
 	if(tempElapsed > 0.1):
 		if(get_frame() == self.get_sprite_frames().get_frame_count(get_animation ( ))-1):
@@ -225,7 +226,7 @@ tracks/0/keys = {
 "times": FloatArray( 0, 1, 2 ),
 "transitions": FloatArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, -24 ), Vector2( 0, 0 ), Vector2( 0, -24 ) ]
+"values": [ Vector2( 0, -8 ), Vector2( 0, 0 ), Vector2( 0, -24 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("spawn2:transform/pos")
@@ -255,7 +256,7 @@ tracks/3/keys = {
 "times": FloatArray( 1, 2 ),
 "transitions": FloatArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( -16, -5 ) ]
+"values": [ Vector2( 16, 16 ), Vector2( 8, 16 ) ]
 }
 tracks/4/type = "method"
 tracks/4/path = NodePath(".")
@@ -299,10 +300,10 @@ tracks/6/keys = {
 
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
-shapes/0/transform = Matrix32( 1.6, 0, 0, 1.6, 0, 0 )
+shapes/0/transform = Matrix32( 1.6, 0, 0, 1.67361, 16, 21 )
 shapes/0/trigger = false
 shapes/1/shape = SubResource( 1 )
-shapes/1/transform = Matrix32( 1.6, 0, 0, 1.6, 0, 0 )
+shapes/1/transform = Matrix32( 1.6, 0, 0, 1.6, 16, 20 )
 shapes/1/trigger = true
 collision/layers = 1
 collision/mask = 1
@@ -315,10 +316,12 @@ lifepoints = 100
 
 visibility/visible = false
 texture = ExtResource( 1 )
+centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
-transform/scale = Vector2( 1.6, 1.6 )
+transform/pos = Vector2( 16, 21 )
+transform/scale = Vector2( 1.6, 1.67361 )
 z/relative = false
 shape = SubResource( 1 )
 trigger = false
@@ -326,6 +329,7 @@ _update_shape_index = 0
 
 [node name="CollisionShape2D_trigger" type="CollisionShape2D" parent="."]
 
+transform/pos = Vector2( 16, 20 )
 transform/scale = Vector2( 1.6, 1.6 )
 z/relative = false
 shape = SubResource( 1 )
@@ -339,10 +343,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = -20.0
-margin/top = -34.0
-margin/right = 20.0
-margin/bottom = -18.0
+margin/left = -4.0
+margin/top = -18.0
+margin/right = 36.0
+margin/bottom = -2.0
 custom_styles/fg = SubResource( 3 )
 custom_styles/bg = SubResource( 4 )
 range/min = 0.0
@@ -356,10 +360,10 @@ percent/visible = false
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 
-transform/scale = Vector2( 1e-05, 1e-05 )
+transform/pos = Vector2( 7.02939, 15.6765 )
+transform/scale = Vector2( 0.3, 0.3 )
 frames = SubResource( 5 )
 animation = "idle"
-frame = 1
 script/script = SubResource( 6 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -377,10 +381,12 @@ autoplay = "spawn"
 
 transform/pos = Vector2( 0, -24 )
 texture = ExtResource( 49 )
+centered = false
 
 [node name="spawn2" type="Sprite" parent="."]
 
-transform/pos = Vector2( 0, 24 )
+transform/pos = Vector2( 0, 16 )
 texture = ExtResource( 49 )
+centered = false
 
 
