@@ -32,3 +32,4 @@ func resetmap():
 	set_start()
 	var hero = get_node("hero")
 	hero.respawn()
+
