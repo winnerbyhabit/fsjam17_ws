@@ -1,13 +1,14 @@
-[gd_scene load_steps=11 format=1]
+[gd_scene load_steps=12 format=1]
 
 [ext_resource path="res://level/Level.tscn" type="PackedScene" id=1]
-[ext_resource path="res://menu/elements/menu_button.tscn" type="PackedScene" id=2]
-[ext_resource path="res://assets/exit.png" type="Texture" id=3]
-[ext_resource path="res://level/sidebar.tscn" type="PackedScene" id=4]
-[ext_resource path="res://assets/button_trap_bg.png" type="Texture" id=5]
-[ext_resource path="res://assets/button_trap_bg_active.png" type="Texture" id=6]
-[ext_resource path="res://fonts/junicode32_bold.fnt" type="BitmapFont" id=7]
-[ext_resource path="res://assets/wall.png" type="Texture" id=8]
+[ext_resource path="res://level/mana.gd" type="Script" id=2]
+[ext_resource path="res://menu/elements/menu_button.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/exit.png" type="Texture" id=4]
+[ext_resource path="res://level/sidebar.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/button_trap_bg.png" type="Texture" id=6]
+[ext_resource path="res://assets/button_trap_bg_active.png" type="Texture" id=7]
+[ext_resource path="res://fonts/junicode32_bold.fnt" type="BitmapFont" id=8]
+[ext_resource path="res://assets/wall.png" type="Texture" id=9]
 
 [sub_resource type="GDScript" id=1]
 
@@ -16,6 +17,9 @@ script/source = "extends Node
 onready var level = get_node(\"Level\")
 var trap_class = load(\"res://level/Trap.tscn\")
 var mouse_offset = Vector2(-320,-60)
+
+onready var manaHandler = get_node(\"mana\")
+
 
 const TRAP = 0
 const MONSTER = 1
@@ -44,14 +48,16 @@ func _input(ev):
 				var trap = trap_class.instance()
 				trap.damage = trap_damage
 				trap.set_pos(ev.pos + mouse_offset)
-				level.placeTrap(trap)#,ev.global_pos)
+				if(manaHandler.use_mana(trap_mana)):
+					level.placeTrap(trap)#,ev.global_pos)
 			elif (place == MONSTER):
 				var monster_class = load(monster_class_path)
 				#var monster_class = load(\"res://level/goblins/Goblin.tscn\")
 				var monster = monster_class.instance()
 				monster.damage = monster_damage
 				monster.set_pos(ev.pos + mouse_offset)
-				level.placeTrap(monster)#,ev.global_pos)
+				if(manaHandler.use_mana(monster_mana)):
+					level.placeTrap(monster)#,ev.global_pos)
 			elif (place == WALL):
 				if(level.placeWall(ev.pos-Vector2(320,60))):
 					get_node(\"wall_placement/AnimationPlayer\").play(\"cooldown\")
@@ -61,13 +67,13 @@ func set_trap(damage,mana):
 	trap_damage = damage
 	trap_mana = mana
 	place = TRAP
+	
 
 func set_monster(damage,mana,class_path):
 	monster_damage = damage
 	monster_mana = mana
 	monster_class_path = class_path
 	place = MONSTER
-
 
 func _on_wall_placement_button_down():
 	place = WALL
@@ -118,8 +124,8 @@ script/script = SubResource( 1 )
 
 [node name="mana" type="Node2D" parent="."]
 
-editor/display_folded = true
 transform/pos = Vector2( 0, 1064 )
+script/script = ExtResource( 2 )
 
 [node name="ManaText" type="Label" parent="mana"]
 
@@ -157,27 +163,26 @@ range/exp_edit = false
 range/rounded = false
 percent/visible = true
 
-[node name="ExitButton" parent="." instance=ExtResource( 2 )]
+[node name="ExitButton" parent="." instance=ExtResource( 3 )]
 
 margin/left = 1860.0
 margin/right = 1920.0
 margin/bottom = 60.0
-textures/normal = ExtResource( 3 )
+textures/normal = ExtResource( 4 )
 params/scale = Vector2( 1, 1 )
 nextScene = "res://menu/menu.tscn"
 
-[node name="trap_sidebar" parent="." instance=ExtResource( 4 )]
+[node name="trap_sidebar" parent="." instance=ExtResource( 5 )]
 
 title = "Traps"
 
-[node name="monster_sidebar" parent="." instance=ExtResource( 4 )]
+[node name="monster_sidebar" parent="." instance=ExtResource( 5 )]
 
 transform/pos = Vector2( 1600, 60 )
 title = "Monster"
 
 [node name="wall_placement" type="TextureButton" parent="."]
 
-editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -189,8 +194,8 @@ margin/bottom = 61.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 5 )
-textures/hover = ExtResource( 6 )
+textures/normal = ExtResource( 6 )
+textures/hover = ExtResource( 7 )
 params/resize_mode = 0
 params/scale = Vector2( 1, 0.6 )
 params/stretch_mode = 0
@@ -205,7 +210,7 @@ margin/left = 14.0
 margin/top = 0.0
 margin/right = 241.0
 margin/bottom = 60.0
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 8 )
 text = "Wand hinzufügen"
 align = 1
 valign = 1
@@ -216,7 +221,7 @@ max_lines_visible = -1
 [node name="Node2D" type="Sprite" parent="wall_placement"]
 
 transform/pos = Vector2( 260.451, 15.5672 )
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 centered = false
 
 [node name="ColorFrame" type="ColorFrame" parent="wall_placement/Node2D"]
