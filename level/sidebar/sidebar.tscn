@@ -1,46 +1,97 @@
-[gd_scene load_steps=8 format=1]
+[gd_scene load_steps=4 format=1]
 
 [ext_resource path="res://assets/sidebar_bg.png" type="Texture" id=1]
 [ext_resource path="res://fonts/junicode64_bold.fnt" type="BitmapFont" id=2]
-[ext_resource path="res://assets/button_trap_bg.png" type="Texture" id=3]
-[ext_resource path="res://assets/trap.png" type="Texture" id=4]
-[ext_resource path="res://assets/sounds/button_good.wav" type="Sample" id=5]
 
-[sub_resource type="SampleLibrary" id=1]
+[sub_resource type="GDScript" id=1]
 
-samples/button_good = {
-"db": 0.0,
-"pitch": 1.0,
-"priority": 0,
-"sample": ExtResource( 5 )
-}
-
-[sub_resource type="GDScript" id=2]
-
-script/source = "extends SamplePlayer
+script/source = "extends Sprite
 
 # class member variables go here, for example:
 # var a = 2
 # var b = \"textvar\"
+#export(String) var title
+export(String,\"Traps\",\"Monster\") var title
+
+signal trap_button_pressed(damage, mana)
+signal monster_button_pressed(damage, mana, class_path)
+
+var trap_button_class = load(\"res://level/sidebar/trapButton.tscn\")
+var monster_button_class = load(\"res://level/sidebar/monsterButton.tscn\")
 
 func _ready():
-	# Called every time the node is added to the scene.
-	# Initialization here
-	pass
+	get_node(\"title\").set_text(title)
+	
+	if(title == \"Traps\"):
+		addTrapButtons()
+		
+		var children = get_node(\"ButtonGroup\").get_children()
+		for child in children:
+			child.connect(\"pressed\", self, \"trap_button_pressed\",[child.damage,child.mana])
+	elif(title == \"Monster\"):
+		addMonsterButtons()
+		
+		var children = get_node(\"ButtonGroup\").get_children()
+		for child in children:
+			child.connect(\"pressed\", self, \"monster_button_pressed\",[child.damage,child.mana,child.monsterClassPath])
+		
 
 
-func _on_TextureButton_button_down():
-	play(\"button_good\")
-	pass # replace with function body
-"
+func trap_button_pressed(damage,mana):
+	emit_signal(\"trap_button_pressed\",damage,mana)
+	
+func monster_button_pressed(damage,mana,class_path):
+	print(\"monster\")
+	emit_signal(\"monster_button_pressed\",damage,mana,class_path)
+
+func add_trap_button(damage,mana,name,imagePath):
+	var button = trap_button_class.instance()
+	button.damage=damage
+	button.mana = mana
+	button.trapName=name
+	button.trapImage=imagePath
+	get_node(\"ButtonGroup\").add_child(button)
+
+func add_monster_button(damage,mana,name,classPath,imagePath):
+	var button = monster_button_class.instance()
+	button.damage=damage
+	button.mana = mana
+	button.monsterName=name
+	button.monsterImage=imagePath
+	button.monsterClassPath = classPath
+	#button.beschreibung = beschreibung
+	get_node(\"ButtonGroup\").add_child(button)
+
+func addMonsterButtons():
+	add_monster_button(10,20,\"Eismonster\",\"res://level/goblins/Goblin.tscn\",\"res://assets/Graphic/Monster/Monster19.png\")
+	add_monster_button(20,40,\"starkes Eismonster\",\"res://level/goblins/Goblin.tscn\",\"res://assets/Graphic/Monster/Monster19.png\")
+	add_monster_button(30,100,\"weißer Drache\",\"res://level/goblins/Goblin2.tscn\",\"res://assets/Graphic/Monster/Monster31.png\")
+	add_monster_button(40,200,\"starker weißer Drache\",\"res://level/goblins/Goblin2.tscn\",\"res://assets/Graphic/Monster/Monster31.png\")
+	add_monster_button(50,300,\"roter Drache\",\"res://level/goblins/Goblin3.tscn\",\"res://assets/Graphic/Monster/Monster32.png\")
+	add_monster_button(60,400,\"starker roter Drache\",\"res://level/goblins/Goblin3.tscn\",\"res://assets/Graphic/Monster/Monster32.png\")
+	add_monster_button(70,500,\"Magier\",\"res://level/goblins/Goblin4.tscn\",\"res://assets/Graphic/Monster/Monster29.png\")
+	add_monster_button(80,600,\"starker Magier\",\"res://level/goblins/Goblin4.tscn\",\"res://assets/Graphic/Monster/Monster29.png\")
+	
+
+func addTrapButtons():
+	add_trap_button(10,10,\"1 Loch\",\"res://assets/trap.png\")
+	add_trap_button(20,30,\"1 tiefes Loch\",\"res://assets/trap.png\")
+	add_trap_button(30,50,\"1 ziemlich tiefes Loch\",\"res://assets/trap.png\")
+	add_trap_button(40,70,\"1 wirklich tiefes Loch\",\"res://assets/trap.png\")
+	add_trap_button(50,100,\"noch ein Loch\",\"res://assets/trap.png\")
+	add_trap_button(60,150,\"Loch ist Loch\",\"res://assets/trap.png\")
+	add_trap_button(70,200,\"Fallgrube\",\"res://assets/trap.png\")
+	add_trap_button(80,270,\"DAS LOCH\",\"res://assets/trap.png\")"
 
 [node name="sidebar" type="Sprite"]
 
 transform/pos = Vector2( 0, 60 )
 texture = ExtResource( 1 )
 centered = false
+script/script = SubResource( 1 )
+title = null
 
-[node name="Label" type="Label" parent="."]
+[node name="title" type="Label" parent="."]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
@@ -69,67 +120,5 @@ margin/top = 65.0
 margin/right = 315.0
 margin/bottom = 920.0
 alignment = 0
-
-[node name="TextureButton" type="TextureButton" parent="ButtonGroup"]
-
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 0.0
-margin/right = 310.0
-margin/bottom = 100.0
-toggle_mode = true
-click_on_press = true
-enabled_focus_mode = 2
-shortcut = null
-textures/normal = ExtResource( 3 )
-params/resize_mode = 0
-params/stretch_mode = 0
-
-[node name="Sprite" type="Sprite" parent="ButtonGroup/TextureButton"]
-
-transform/pos = Vector2( 10, 20 )
-transform/scale = Vector2( 2, 2 )
-texture = ExtResource( 4 )
-centered = false
-
-[node name="Label" type="Label" parent="ButtonGroup/TextureButton"]
-
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-margin/left = 75.0
-margin/top = 10.0
-margin/right = 305.0
-margin/bottom = 74.0
-text = "Falle1:
-Mana: 20		Damage 10"
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="SamplePlayer" type="SamplePlayer" parent="ButtonGroup/TextureButton"]
-
-config/polyphony = 1
-config/samples = SubResource( 1 )
-default/volume_db = 0.0
-default/pitch_scale = 1.0
-default/pan = 0.0
-default/depth = 0.0
-default/height = 0.0
-default/filter/type = 0
-default/filter/cutoff = 5000.0
-default/filter/resonance = 1.0
-default/filter/gain = 1.0
-default/reverb_room = 2
-default/reverb_send = 0.0
-default/chorus_send = 0.0
-script/script = SubResource( 2 )
-
-[connection signal="button_down" from="ButtonGroup/TextureButton" to="ButtonGroup/TextureButton/SamplePlayer" method="_on_TextureButton_button_down"]
 
 

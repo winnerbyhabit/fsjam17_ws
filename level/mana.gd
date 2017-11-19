@@ -1,6 +1,6 @@
 extends Node2D
 
-var mana = 100
+var mana = 10000
 
 func update_mana_bar():
 	get_node("ManaBar").set_value(mana)
