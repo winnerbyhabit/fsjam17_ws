@@ -12,6 +12,7 @@ export(int) var wall_x_max_len = 13
 export(int) var wall_y_max_len = 10
 export(Vector2) var start
 export(Vector2) var exit
+var map = {}
 
 signal ready
 signal hero_wins
@@ -25,8 +26,8 @@ func generateMap():
 	# random Start and Exit points at least distance tiles away from each other
 	randomize() #new randomseed
 	
-	var map = {}
-	# init map with all tiles 0
+	map = {}
+	# init map with borderwalls
 	for i in range(width):
 		map[Vector2(i, 0)] = 1
 		map[Vector2(i,height-1)] = 1
@@ -34,12 +35,6 @@ func generateMap():
 	for j in range(height):
 		map[Vector2(0,j)] = 1
 		map[Vector2(width-1,j)] = 1
-	
-	for i in range(width-2):
-		for j in range(height-2):
-			map[Vector2(i+1,j+1)] = 0
-	
-	
 	
 	
 	# place $(wall_x) walls parallel to x-axis
@@ -108,8 +103,8 @@ func generateMap():
 				exit_x += (2*min_dif_x)
 	
 	get_node("tuer").set_pos(Vector2(exit_x*tilesize,exit_y*tilesize))
-	map[Vector2(start_x,start_y)] = 2
-	map[Vector2(exit_x,exit_y)] = 3
+	#map[Vector2(start_x,start_y)] = 2
+	#map[Vector2(exit_x,exit_y)] = 3
 	
 	
 	
@@ -135,11 +130,17 @@ func generateMap():
 						point["y"]-=1
 						
 				if((point["x"]!=exit_x)or(point["y"]!=exit_y)):
-					map[Vector2(point["x"],point["y"])] = 0
+					var key = Vector2(point["x"],point["y"])
+					if map.has(key):
+						map.erase(key)
 	
 	for i in range(width):
 		for j in range(height):
-			set_cell(i,j,map[Vector2(i,j)])
+			var key = Vector2(i,j)
+			if (map.has(key)):
+				set_cell(i,j,1)
+			else:
+				set_cell(i,j,0)
 	#connect("ready",get_parent(),"set_start")
 	emit_signal("ready")
 
@@ -154,3 +155,11 @@ func hit_exit( body ):
 	if(body.is_in_group("hero")):
 		emit_signal("hero_wins")
 	pass # replace with function body
+	
+func placeWall(pos):
+	if(map.has(pos)):
+		return false
+	else:
+		map[pos] = 1
+		set_cell(pos.x,pos.y,1)
+		return true
