@@ -69,9 +69,13 @@ func _ready():
 	pass
 	
 func on_button_clicked():
-	print(\"test\")
-	play(\"button_good\")
+	#play(\"button_good\")
 	pass # replace with function body
+
+
+func _on_MenuButton_button_down():
+	play(\"button_good\")
+	pass
 "
 
 [node name="MenuButton" type="TextureButton"]
@@ -131,6 +135,8 @@ default/reverb_room = 2
 default/reverb_send = 0.0
 default/chorus_send = 0.0
 script/script = SubResource( 3 )
+
+[connection signal="button_down" from="." to="SoundEffects" method="_on_MenuButton_button_down"]
 
 [connection signal="pressed" from="." to="SoundEffects" method="on_button_clicked"]
 
