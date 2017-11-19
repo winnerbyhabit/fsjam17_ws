@@ -90,7 +90,10 @@ tracks/2/keys = {
 } ]
 }
 
-[node name="Goblin" type="KinematicBody2D"]
+[node name="Goblin" type="KinematicBody2D" groups=[
+"goblin",
+"obstacle",
+]]
 
 input/pickable = false
 shapes/0/shape = SubResource( 1 )

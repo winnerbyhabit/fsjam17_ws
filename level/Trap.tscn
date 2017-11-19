@@ -65,6 +65,7 @@ tracks/1/keys = {
 
 [node name="Trap" type="Sprite" groups=[
 "trap",
+"obstacle",
 ]]
 
 texture = ExtResource( 1 )
