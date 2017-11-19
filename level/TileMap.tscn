@@ -17,7 +17,8 @@ export(int) var wall_x = 25 #walls oriated parallel to x-axis
 export(int) var wall_y = 33 #walls oriated parallel to y-axis
 export(int) var wall_x_max_len = 13
 export(int) var wall_y_max_len = 10
-export(int) var start
+export(Vector2) var start
+export(Vector2) var exit
 
 signal ready
 signal hero_wins
@@ -34,17 +35,16 @@ func generateMap():
 	var map = {}
 	# init map with all tiles 0
 	for i in range(width):
-		map[i] = {}
-		map[i][0] = 1
-		map[i][height-1] = 1
+		map[Vector2(i, 0)] = 1
+		map[Vector2(i,height-1)] = 1
 
 	for j in range(height):
-		map[0][j] = 1
-		map[width-1][j] = 1
+		map[Vector2(0,j)] = 1
+		map[Vector2(width-1,j)] = 1
 	
 	for i in range(width-2):
 		for j in range(height-2):
-			map[i+1][j+1] = 0
+			map[Vector2(i+1,j+1)] = 0
 	
 	
 	
@@ -61,7 +61,7 @@ func generateMap():
 		var len = randi()%wall_x_max_len #random lenght of wall
 		var offset = randi()%(width-len) #space between side and wall
 		for j in range(len):
-			map[j+offset][temp] = 1
+			map[Vector2(j+offset,temp)] = 1
 
 	# place $(wall_y) walls parallel to y-axis
 	walls = []
@@ -75,7 +75,7 @@ func generateMap():
 		var len = randi()%wall_y_max_len #random lenght of wall
 		var offset = randi()%(height-len) # space between top and wall
 		for j in range(len):
-			map[temp][j+offset] = 1
+			map[Vector2(temp,j+offset)] = 1
 	
 	
 	
@@ -84,7 +84,7 @@ func generateMap():
 	var start_x = (randi()%(width-2))+1
 	var start_y = (randi()%(height-2))+1
 	
-	start = Vector2(start_x*tilesize,start_y*tilesize)
+	start = Vector2(start_x,start_y)
 	
 	# first pick exit_y cause width>height and you can pic bigger distance
 	var exit_y = (randi()%(height-2))+1
@@ -115,8 +115,8 @@ func generateMap():
 				exit_x += (2*min_dif_x)
 	
 	get_node(\"tuer\").set_pos(Vector2(exit_x*tilesize,exit_y*tilesize))
-	map[start_x][start_y] = 2
-	map[exit_x][exit_y] = 3
+	map[Vector2(start_x,start_y)] = 2
+	map[Vector2(exit_x,exit_y)] = 3
 	
 	
 	
@@ -142,11 +142,11 @@ func generateMap():
 						point[\"y\"]-=1
 						
 				if((point[\"x\"]!=exit_x)or(point[\"y\"]!=exit_y)):
-					map[point[\"x\"]][point[\"y\"]] = 0
+					map[Vector2(point[\"x\"],point[\"y\"])] = 0
 	
 	for i in range(width):
 		for j in range(height):
-			set_cell(i,j,map[i][j])
+			set_cell(i,j,map[Vector2(i,j)])
 	#connect(\"ready\",get_parent(),\"set_start\")
 	emit_signal(\"ready\")
 
@@ -155,7 +155,7 @@ func generateMap():
 
 
 func get_start():
-	return start
+	return start*tilesize
 
 func hit_exit( body ):
 	if(body.is_in_group(\"hero\")):
@@ -199,6 +199,7 @@ wall_y = 33
 wall_x_max_len = 13
 wall_y_max_len = 10
 start = null
+exit = null
 
 [node name="tuer" type="Sprite" parent="."]
 
