@@ -111,6 +111,7 @@ func generateMap():
 	
 	#generate $(pathes) ways between start and exit with no wall
 	for i in range(pathes):
+		print("path" , i )
 		var point = {
 			"x" : start_x,
 			"y" : start_y,
@@ -130,13 +131,11 @@ func generateMap():
 						point["y"]-=1
 						
 				if((point["x"]!=exit_x)or(point["y"]!=exit_y)):
-
 					map[Vector2(point["x"],point["y"])] = 0
-		exit = Vector2(exit_x,exit_y)
-
 		var key = Vector2(point["x"],point["y"])
 		if map.has(key):
 			map.erase(key)
+	exit = Vector2(exit_x,exit_y)
 
 	
 	for i in range(width):
