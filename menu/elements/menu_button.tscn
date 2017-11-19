@@ -16,7 +16,7 @@ export(String) var nextScene = \"res://\"
 
 func _ready():
 	#rufe onclick auf wenn button gedrückt wird
-	connect(\"pressed\", self, \"onclick\")
+	#connect(\"pressed\", self, \"onclick\")
 	
 	#setze text
 	get_node(\"Text\").set_text(value)
@@ -132,8 +132,8 @@ default/reverb_send = 0.0
 default/chorus_send = 0.0
 script/script = SubResource( 3 )
 
-[connection signal="pressed" from="." to="." method="onclick"]
-
 [connection signal="pressed" from="." to="SoundEffects" method="on_button_clicked"]
+
+[connection signal="pressed" from="." to="." method="onclick"]
 
 
