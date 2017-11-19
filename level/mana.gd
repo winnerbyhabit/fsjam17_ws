@@ -4,6 +4,7 @@ var mana = 100
 
 func update_mana_bar():
 	get_node("ManaBar").set_value(mana)
+	get_node("mana").set_text(str(mana))
 	
 func use_mana(amount):
 	if(amount <= mana):
