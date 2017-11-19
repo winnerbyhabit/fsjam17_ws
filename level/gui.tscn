@@ -43,17 +43,13 @@ func _input(ev):
 			if(place == TRAP):
 				var trap = trap_class.instance()
 				trap.damage = trap_damage
-				#print(trap_damage)
 				trap.set_pos(ev.pos + mouse_offset)
 				level.placeTrap(trap)#,ev.global_pos)
 			elif (place == MONSTER):
 				var monster_class = load(monster_class_path)
-				print(monster_class_path)
 				#var monster_class = load(\"res://level/goblins/Goblin.tscn\")
-				print (\"1monster\")
 				var monster = monster_class.instance()
 				monster.damage = monster_damage
-				#print(trap_damage)
 				monster.set_pos(ev.pos + mouse_offset)
 				level.placeTrap(monster)#,ev.global_pos)
 			elif (place == WALL):
@@ -67,7 +63,6 @@ func set_trap(damage,mana):
 	place = TRAP
 
 func set_monster(damage,mana,class_path):
-	print(\"set monster\")
 	monster_damage = damage
 	monster_mana = mana
 	monster_class_path = class_path
