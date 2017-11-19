@@ -134,9 +134,9 @@ func generateMap():
 					map[Vector2(point["x"],point["y"])] = 0
 		exit = Vector2(exit_x,exit_y)
 
-					var key = Vector2(point["x"],point["y"])
-					if map.has(key):
-						map.erase(key)
+		var key = Vector2(point["x"],point["y"])
+		if map.has(key):
+			map.erase(key)
 
 	
 	for i in range(width):
