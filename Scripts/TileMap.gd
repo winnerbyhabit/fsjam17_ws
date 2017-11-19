@@ -136,6 +136,7 @@ func generateMap():
 						
 				if((point["x"]!=exit_x)or(point["y"]!=exit_y)):
 					map[Vector2(point["x"],point["y"])] = 0
+		exit = Vector2(exit_x,exit_y)
 	
 	for i in range(width):
 		for j in range(height):
@@ -149,6 +150,9 @@ func generateMap():
 
 func get_start():
 	return start*tilesize
+
+func get_exit():
+	return exit * tilesize
 
 func hit_exit( body ):
 	if(body.is_in_group("hero")):

@@ -44,6 +44,7 @@ exit = null
 
 [node name="tuer" type="Sprite" parent="."]
 
+editor/display_folded = true
 texture = ExtResource( 3 )
 centered = false
 
