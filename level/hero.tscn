@@ -79,22 +79,28 @@ var points = []
 # NOTE: setting this value too low might result in jerky movement near destination
 const eps = 0
 
+var counter = 0
+var direction = Vector2(0,0)
 func _fixed_process(delta):
-
-	var random_direction = Vector2(int(rand_range(0,1)+0.5),int(rand_range(0,1)+0.5))
-# refresh the points in the path
-	points = get_node(\"../Navigation2D\").get_simple_path(get_pos(),map.get_exit()+Vector2(16,16),false)
-	#points = get_node(\"../Navigation2D\").get_simple_path(get_pos(), get_global_mouse_pos() + Vector2(-320,-60), false)
-	# if the path has more than one point
-	if points.size() > 1:
-		var distance = points[1] - get_pos() + 1.1*random_direction 
-		var direction = distance.normalized() # direction of movement
-		if distance.length() > eps or points.size() > 2:
-			set_linear_velocity(direction*motion_speed)
-		else:
-			print(\"ziel erreicht\")
-			set_linear_velocity(Vector2(0, 0)) # close enough - stop moving
-		update() # we update the node so it has to dra
+	counter += delta
+	
+	if(counter >1):
+	
+		var random_direction = Vector2(int(rand_range(0,1)+0.5),int(rand_range(0,1)+0.5))
+	# refresh the points in the path
+		points = get_node(\"../Navigation2D\").get_simple_path(get_pos(),map.get_exit()+Vector2(16,16),false)
+		#points = get_node(\"../Navigation2D\").get_simple_path(get_pos(), get_global_mouse_pos() + Vector2(-320,-60), false)
+		# if the path has more than one point
+		if points.size() > 1:
+			var distance = points[1] - get_pos() + 2*random_direction 
+			direction = distance.normalized() # direction of movement
+			if distance.length() > eps or points.size() > 2:
+				set_linear_velocity(direction*motion_speed)
+			else:
+				print(\"ziel erreicht\")
+				set_linear_velocity(Vector2(0, 0)) # close enough - stop moving
+			update() # we update the node so it has to dra
+		counter = 0
 
 func _draw():
 	# if there are points to draw
@@ -304,7 +310,7 @@ collision/layers = 1
 collision/mask = 1
 mode = 2
 mass = 1.0
-friction = 1.0
+friction = 0.0
 bounce = 1.0
 gravity_scale = 0.0
 custom_integrator = false
