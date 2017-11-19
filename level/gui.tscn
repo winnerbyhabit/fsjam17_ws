@@ -29,11 +29,13 @@ var place = -1
 
 #werte der aktuellen trap
 var trap_damage = 0
-var trap_mana = 100
+var trap_mana = 10000000
+var trap_button
 
 #werte des aktuellen monster
 var monster_damage = 0
 var monster_mana = 100
+var monster_button
 var monster_class_path = \"\"
 
 
@@ -50,6 +52,8 @@ func _input(ev):
 				trap.set_pos(ev.pos + mouse_offset)
 				if(manaHandler.use_mana(trap_mana)):
 					level.placeTrap(trap)#,ev.global_pos)
+					trap_button.set_disabled(true)
+					
 			elif (place == MONSTER):
 				var monster_class = load(monster_class_path)
 				#var monster_class = load(\"res://level/goblins/Goblin.tscn\")
@@ -63,16 +67,18 @@ func _input(ev):
 					get_node(\"wall_placement/AnimationPlayer\").play(\"cooldown\")
 					place = -1
 				
-func set_trap(damage,mana):
+func set_trap(damage,mana,button):
 	trap_damage = damage
 	trap_mana = mana
+	trap_button = button
 	place = TRAP
 	
 
-func set_monster(damage,mana,class_path):
+func set_monster(damage,mana,class_path,button):
 	monster_damage = damage
 	monster_mana = mana
 	monster_class_path = class_path
+	monster_button = button
 	place = MONSTER
 
 func _on_wall_placement_button_down():
@@ -130,6 +136,7 @@ script/script = SubResource( 1 )
 
 [node name="mana" type="Node2D" parent="."]
 
+editor/display_folded = true
 transform/pos = Vector2( 0, 1064 )
 script/script = ExtResource( 2 )
 
@@ -204,7 +211,6 @@ title = "Monster"
 
 [node name="wall_placement" type="TextureButton" parent="."]
 
-editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -242,6 +248,7 @@ max_lines_visible = -1
 
 [node name="Node2D" type="Sprite" parent="wall_placement"]
 
+editor/display_folded = true
 transform/pos = Vector2( 260.451, 15.5672 )
 texture = ExtResource( 9 )
 centered = false

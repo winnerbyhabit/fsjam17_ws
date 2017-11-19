@@ -83,8 +83,3 @@ value = "Exit"
 nextScene = "res://menu/exit.tscn"
 
 
-[editable path="Start"]
-[editable path="Start_thorsten"]
-[editable path="Options"]
-[editable path="Credits"]
-[editable path="Quit"]
