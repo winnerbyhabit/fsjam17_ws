@@ -64,7 +64,7 @@ extents = Vector2( 10, 10 )
 
 script/source = "extends RigidBody2D
 
-
+signal hit_exit
 # Member variables
 #normale motion speed
 var MOTION_SPEED = 64

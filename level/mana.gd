@@ -15,6 +15,16 @@ func use_mana(amount):
 
 func setMaxMana(amount):
 	get_node("ManaBar").set_max(mana)
+	
+func getMaxMana():
+	return get_node("ManaBar").get_max()
 
 func _ready():
 	setMaxMana(mana)
+
+func setMana(var1):
+	mana = var1
+	update_mana_bar()
+
+func getMana():
+	return mana
